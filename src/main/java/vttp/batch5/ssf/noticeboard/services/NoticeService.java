@@ -1,23 +1,16 @@
 package vttp.batch5.ssf.noticeboard.services;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
@@ -30,13 +23,13 @@ public class NoticeService {
 	@Autowired
 	NoticeRepository noticeRepository; 
 
-	RestTemplate restTemplate = new RestTemplate(); 
-	String url = "https://publishing-production-d35a.up.railway.app/notice";
-
-	// TODO: Task 3
+	// Task 3
 	// You can change the signature of this method by adding any number of parameters
 	// and return any type
 	public void postToNoticeServer(Notice notice) {
+
+		RestTemplate restTemplate = new RestTemplate(); 
+		String url = "https://publishing-production-d35a.up.railway.app/notice"; //TODO hide url 
 
 		// https://docs.spring.io/spring-framework/docs/4.2.5.RELEASE_to_4.3.0.RC1/Spring%20Framework%204.3.0.RC1/org/springframework/http/RequestEntity.html
 
@@ -58,9 +51,13 @@ public class NoticeService {
 		// get response payload 
 		ResponseEntity<String> response = restTemplate.exchange(request, String.class);
 
-		// // testing
-		// String payload = response.getBody(); 
-		// System.out.println(payload);
+		// testing
+		String payload = response.getBody(); 
+		System.out.println(payload);
+
+		// if insert success JSON payload into Redis database is successful
+		noticeRepository.insertNotices(response);
+		// return true;
 												
 	}
 

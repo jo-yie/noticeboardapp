@@ -56,12 +56,26 @@ public class NoticeController {
 
         }
 
-        // post form results to server 
+        // // no binding errors -->
+        // // post form results to server
+        
+        // // SUCCESS: if saved to redis 
+        // if (noticeService.postToNoticeServer(notice)) {
+
+        //     // return view2.html
+        //     return "view2";
+
+        // } else {
+
+        //     // UNSUCCESSFUL VIEW:
+        //     return "view3";
+
+        // }
+
         noticeService.postToNoticeServer(notice);
 
-        // if no binding result errors 
-        // return test.html
         return "test";
+
 
     }
 
