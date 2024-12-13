@@ -22,7 +22,7 @@ public class NoticeRepository implements Serializable {
 	@Qualifier("notice")
 	RedisTemplate<String, Object> redisTemplate;
 
-	// TODO: Task 4
+	// Task 4
 	// You can change the signature of this method by adding any number of parameters
 	// and return any type
 	// 
@@ -30,12 +30,13 @@ public class NoticeRepository implements Serializable {
 	 * Write the redis-cli command that you use in this method in the comment. 
 	 * For example if this method deletes a field from a hash, then write the following
 	 * redis-cli command 
-	 * 	hset notices hashKey payload
-	 *
+	 * 	
+	 * redis-cli command: hset notices hashKey payload
 	 *
 	 */
+
 	// send success JSON payload to Redis as JSON String 
-	public void insertNotices(ResponseEntity<String> response) {
+	public String insertNotices(ResponseEntity<String> response) {
 
 		// get body of success payload as string
 		String payload = response.getBody(); 
@@ -48,7 +49,9 @@ public class NoticeRepository implements Serializable {
 		// save into Redis 
 		redisTemplate.opsForHash().put("notices", hashKey, payload);
 
-		System.out.println("successfully put into redis");
+		// System.out.println("successfully put into redis");
+
+		return hashKey;
 
 	}
 
@@ -85,6 +88,18 @@ public class NoticeRepository implements Serializable {
 
 	}
 
+	// task 6 
+	// helper method 
+	// get random key from redis
+
+	// redis-cli command: hrandfield notices
+	public String getRandomKeyFromRedis() { 
+
+		String randKey = (String) redisTemplate.opsForHash().randomKey("notices");
+
+		return randKey; 
+
+	}
 
 
 }

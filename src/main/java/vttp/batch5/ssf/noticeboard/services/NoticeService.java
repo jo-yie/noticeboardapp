@@ -26,7 +26,7 @@ public class NoticeService {
 	// Task 3
 	// You can change the signature of this method by adding any number of parameters
 	// and return any type
-	public void postToNoticeServer(Notice notice) {
+	public String postToNoticeServer(Notice notice) {
 
 		RestTemplate restTemplate = new RestTemplate(); 
 		String url = "https://publishing-production-d35a.up.railway.app/notice"; //TODO hide url 
@@ -41,25 +41,40 @@ public class NoticeService {
 											.post(url)
 											// .header("Accept", "application/json")
 											// .header("Content-Type", "application/json")
-											.contentType(MediaType.APPLICATION_JSON)
+											.contentType(MediaType.APPLICATION_JSON) 
             								.accept(MediaType.APPLICATION_JSON)
 											.body(jString); 
 
 		// // testing
 		// System.out.println(request);
 
-		// get response payload 
-		ResponseEntity<String> response = restTemplate.exchange(request, String.class);
+		ResponseEntity<String> response;
 
-		// testing
-		String payload = response.getBody(); 
-		System.out.println(payload);
+		// get response payload 
+		try {
+
+			response = restTemplate.exchange(request, String.class);
+
+		} catch (Exception e) {
+
+			// send error message to controller
+			return "Error: " + e.getMessage();
+
+		}
+
+		// // testing
+		// String payload = response.getBody(); 
+		// System.out.println(payload);
 
 		// if insert success JSON payload into Redis database is successful
-		noticeRepository.insertNotices(response);
-		// return true;
-												
+		String postingId = noticeRepository.insertNotices(response);
+
+		// send posting id back to controller
+		return postingId;
+	
 	}
+												
+	
 
 	// task 3 
 	// helper method 
@@ -77,7 +92,6 @@ public class NoticeService {
 										.add("poster", notice.getPoster())
 										.add("postDate", dateToMillis(notice.getPostDate()))
 										.add("categories", arrayBuilder)
-										// .add("categories", temp2.toString())
 										.add("text", notice.getText());
 
 		JsonObject noticeObject = objectBuilder.build(); 
@@ -93,6 +107,25 @@ public class NoticeService {
 	public long dateToMillis(Date date) { 
 
 		return date.getTime();
+
+	}
+
+	// task 6 
+	// helper method 
+	// get random key from repo layer
+	public Boolean getRandomKeyFromRepo() { 
+
+		String randKey = noticeRepository.getRandomKeyFromRedis();
+
+		if (randKey == null || randKey.isEmpty()) {
+
+			return false;
+
+		} else {
+
+			return true; 
+			
+		}
 
 	}
 

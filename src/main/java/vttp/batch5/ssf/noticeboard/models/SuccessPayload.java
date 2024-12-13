@@ -1,7 +1,5 @@
 package vttp.batch5.ssf.noticeboard.models;
 
-import jakarta.json.JsonNumber;
-
 // task 4
 public class SuccessPayload {
 

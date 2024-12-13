@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unsuccessful.html</title>
+</head>
+<body>
+
+    <h1>unsuccessful.html</h1>
+    <h1>Cannot post notice to the server</h1>
+
+    <h2>Error message</h2>
+
+    <p>I/O error on POST request for: "<span th:text="${baseUrl}"></span>/notice": Connection refused</p> 
+    <p>Response from REST API: <span th:text="${response}"></span></p>
+
+    <form th:action="@{/}" th:method="post">
+        <button type="submit">Back</button>
+    </form>
+    
+</body>
+</html>

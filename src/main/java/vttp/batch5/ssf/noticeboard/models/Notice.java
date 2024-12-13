@@ -1,7 +1,5 @@
 package vttp.batch5.ssf.noticeboard.models;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Date;
 import java.util.List;
 
