@@ -33,14 +33,13 @@ public class NoticeController {
 
         model.addAttribute("notice", notice);
 
-        // return notice.html
         return "notice";
+
     }
 
     // task 2
     // POST /notice 
     // check validations
-    // use "test.html" for testing 
     @PostMapping("/notice")
     public String postForm(
         @Valid @ModelAttribute Notice notice, BindingResult bindingResult, Model model) {
@@ -51,8 +50,9 @@ public class NoticeController {
 
         }
 
-        // if num of categories selected is zero, return "notice.html"
+        // if num of categories selected is zero, return notice.html
         if (!bindingResult.hasErrors() && !notice.validCategories()) {
+            
             bindingResult.rejectValue("categories", "error.notice", "Must select at least one category");
 
             return "notice";
@@ -85,7 +85,6 @@ public class NoticeController {
 
     }
     
-
     // task 5 
     // POST /
     // return original view after successful form post
@@ -106,7 +105,7 @@ public class NoticeController {
     @GetMapping("/status")
     public ResponseEntity<String> healthCheck() {
 
-        // getting random key from redis works
+        // success: getting random key from redis works
         if(noticeService.getRandomKeyFromRepo()) {
 
             return ResponseEntity.ok()
@@ -115,7 +114,7 @@ public class NoticeController {
 
         } 
 
-        // getting random key from redis doesn't work 
+        // unsuccessful: getting random key from redis doesn't work 
         else {
 
             return ResponseEntity.status(503)

@@ -33,26 +33,20 @@ public class NoticeService {
 	public String postToNoticeServer(Notice notice) {
 
 		RestTemplate restTemplate = new RestTemplate(); 
-		// String url = "https://publishing-production-d35a.up.railway.app/notice"; //TODO hide url 
 
-		// build request entity as string 
+		// convert Notice POJO to string
 		String jString = POJOToJsonString(notice);
 
-		// build request payload 
+		// build RequestEntity payload 
 		RequestEntity<String> request = RequestEntity
 											.post(url)
-											// .header("Accept", "application/json")
-											// .header("Content-Type", "application/json")
 											.contentType(MediaType.APPLICATION_JSON) 
             								.accept(MediaType.APPLICATION_JSON)
 											.body(jString); 
 
-		// // testing
-		// System.out.println(request);
-
+		// get ResponseEntity payload from API
 		ResponseEntity<String> response;
 
-		// get response payload 
 		try {
 
 			response = restTemplate.exchange(request, String.class);
@@ -64,11 +58,7 @@ public class NoticeService {
 
 		}
 
-		// // testing
-		// String payload = response.getBody(); 
-		// System.out.println(payload);
-
-		// if insert success JSON payload into Redis database is successful
+		// insert success JSON payload into Redis database
 		String postingId = noticeRepository.insertNotices(response);
 
 		// send posting id back to controller
@@ -76,8 +66,6 @@ public class NoticeService {
 	
 	}
 												
-	
-
 	// task 3 
 	// helper method 
 	// convert Notice POJO --> JSON String 

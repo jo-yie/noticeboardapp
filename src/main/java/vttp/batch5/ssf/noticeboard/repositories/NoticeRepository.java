@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonReader;
 import vttp.batch5.ssf.noticeboard.models.SuccessPayload;
 
@@ -35,7 +34,7 @@ public class NoticeRepository implements Serializable {
 	 *
 	 */
 
-	// send success JSON payload to Redis as JSON String 
+	// send success JSON payload to Redis
 	public String insertNotices(ResponseEntity<String> response) {
 
 		// get body of success payload as string
@@ -48,8 +47,6 @@ public class NoticeRepository implements Serializable {
 
 		// save into Redis 
 		redisTemplate.opsForHash().put("notices", hashKey, payload);
-
-		// System.out.println("successfully put into redis");
 
 		return hashKey;
 
@@ -73,21 +70,6 @@ public class NoticeRepository implements Serializable {
 
 	}
 
-	// task 4 
-	// helper method 
-	// POJO to String 
-	public Object POJOToJsonString(SuccessPayload sp) {
-
-		JsonObjectBuilder builder = Json.createObjectBuilder()
-										.add("id", sp.getId())
-										.add("timestamp", sp.getTimestamp());
-
-		JsonObject jObject = builder.build(); 
-		// return jObject;
-		return jObject.toString(); 
-
-	}
-
 	// task 6 
 	// helper method 
 	// get random key from redis
@@ -100,6 +82,5 @@ public class NoticeRepository implements Serializable {
 		return randKey; 
 
 	}
-
 
 }
