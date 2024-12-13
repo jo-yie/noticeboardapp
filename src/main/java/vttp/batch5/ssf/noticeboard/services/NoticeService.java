@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class NoticeService {
 
 	@Autowired
 	NoticeRepository noticeRepository; 
+	
+	@Value("${my.server.url}")
+	private String url;
 
 	// Task 3
 	// You can change the signature of this method by adding any number of parameters
@@ -29,9 +33,7 @@ public class NoticeService {
 	public String postToNoticeServer(Notice notice) {
 
 		RestTemplate restTemplate = new RestTemplate(); 
-		String url = "https://publishing-production-d35a.up.railway.app/notice"; //TODO hide url 
-
-		// https://docs.spring.io/spring-framework/docs/4.2.5.RELEASE_to_4.3.0.RC1/Spring%20Framework%204.3.0.RC1/org/springframework/http/RequestEntity.html
+		// String url = "https://publishing-production-d35a.up.railway.app/notice"; //TODO hide url 
 
 		// build request entity as string 
 		String jString = POJOToJsonString(notice);
@@ -124,7 +126,7 @@ public class NoticeService {
 		} else {
 
 			return true; 
-			
+
 		}
 
 	}
